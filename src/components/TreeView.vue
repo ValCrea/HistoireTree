@@ -1,21 +1,28 @@
 <script setup lang="ts">
-import type { Node } from "@/utils/types";
+import { ref, type Ref } from "vue";
+import type { Node } from "@/utils/tree-types";
 import TreeViewNode from "@/components/TreeViewNode.vue";
+import { treeKeysFill } from "@/utils/tree-utils";
 
 const props = defineProps<{
   nodes: Node[];
   dense?: boolean;
   activatable?: boolean;
 }>();
+
+const fullNodes: Ref<Node>[] = treeKeysFill(props.nodes).map((node) =>
+  ref(node)
+);
 </script>
 
 <template>
   <ul class="tree-container">
-    <li v-for="node in nodes">
+    <li v-for="node in fullNodes">
       <TreeViewNode
-        :node="node"
+        v-model:node="node.value"
         :dense="props.dense"
         :activatable="props.activatable"
+        :nested="0"
       />
     </li>
   </ul>

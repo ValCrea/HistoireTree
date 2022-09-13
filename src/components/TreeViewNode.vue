@@ -1,47 +1,55 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import type { Node } from "@/utils/types";
+import { ref } from "vue";
+import type { Node } from "@/utils/tree-types";
+import { nodeKeysFill } from "@/utils/tree-utils";
 
 const props = defineProps<{
   node: Node;
   dense?: boolean;
   activatable?: boolean;
-  nested?: number;
+
+  nested: number;
 }>();
+const emit = defineEmits(["update:node"]);
 
-const defNested = computed(() => {
-  if (!props.nested) return 0;
-  return props.nested;
-});
+const refNode = props.node.nodes.map((node) => ref(node));
 
-const activate = () => {
-  if (!props.activatable) return;
-
-  selected.value = !selected.value;
+const expandNodes = () => {
+  props.node.expand = !props.node.expand;
+  emit("update:node", props.node);
 };
 
-const expand = ref(false);
-const selected = ref(false);
+const selectNode = () => {
+  if (!props.activatable) return;
+
+  props.node.selected = !props.node.selected;
+  emit("update:node", props.node);
+};
 </script>
 
 <template>
   <section
-    @click="activate"
-    :style="{ paddingLeft: `${2 * defNested}rem` }"
+    @click="selectNode"
+    :style="{ paddingLeft: `${2 * nested}rem` }"
     :class="{
       pad015: dense,
       pad03: !dense,
-      'node--selected': selected,
+      'node--selected': props.node.selected,
     }"
     class="node"
   >
     <button
       v-if="node.nodes.length > 0"
-      @click.stop="expand = !expand"
+      @click.stop="expandNodes"
       class="node__expand focus-circle"
     >
       <div class="node__icon">
-        <div :class="{ 'arrow-down': expand, 'arrow-left': !expand }"></div>
+        <div
+          :class="{
+            'arrow-down': props.node.expand,
+            'arrow-left': !props.node.expand,
+          }"
+        ></div>
       </div>
     </button>
 
@@ -51,14 +59,15 @@ const selected = ref(false);
       {{ node.name }}
     </p>
   </section>
-  <template v-if="expand">
-    <TreeViewNode
-      v-for="childNode in node.nodes"
-      :node="childNode"
-      :dense="props.dense"
-      :activatable="props.activatable"
-      :nested="defNested + 1"
-    />
+  <template v-if="props.node.expand">
+    <template v-for="childNode in refNode">
+      <TreeViewNode
+        v-model:node="childNode.value"
+        :dense="props.dense"
+        :activatable="props.activatable"
+        :nested="nested + 1"
+      />
+    </template>
   </template>
 </template>
 
@@ -77,6 +86,7 @@ const selected = ref(false);
 
   &__name {
     margin: 0;
+    margin-left: 0.3rem;
   }
 
   &__expand {
