@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import type { Node } from "@/utils/tree-types";
-import { nodeKeysFill } from "@/utils/tree-utils";
 
 const props = defineProps<{
   node: Node;
@@ -10,7 +9,7 @@ const props = defineProps<{
 
   nested: number;
 }>();
-const emit = defineEmits(["update:node"]);
+const emit = defineEmits(["update:node", "clear-select"]);
 
 const refNode = props.node.nodes.map((node) => ref(node));
 
@@ -22,15 +21,19 @@ const expandNodes = () => {
 const selectNode = () => {
   if (!props.activatable) return;
 
-  props.node.selected = !props.node.selected;
-  emit("update:node", props.node);
+  emit("clear-select");
+
+  nextTick(() => {
+    props.node.selected = !props.node.selected;
+    emit("update:node", props.node);
+  });
 };
 </script>
 
 <template>
   <section
     @click="selectNode"
-    :style="{ paddingLeft: `${2 * nested}rem` }"
+    :style="{ paddingLeft: `${2 * nested + 0.3}rem` }"
     :class="{
       pad015: dense,
       pad03: !dense,
@@ -66,6 +69,7 @@ const selectNode = () => {
         :dense="props.dense"
         :activatable="props.activatable"
         :nested="nested + 1"
+        @clearSelect="emit('clear-select')"
       />
     </template>
   </template>
@@ -135,7 +139,7 @@ const selectNode = () => {
 
   &:focus::before {
     content: "";
-    background-color: rgba(200, 200, 200, 0.5);
+    background-color: rgb(240, 240, 240);
     border-radius: 50%;
 
     position: absolute;
@@ -143,6 +147,7 @@ const selectNode = () => {
     top: 0;
     width: 100%;
     height: 100%;
+    z-index: -1;
   }
 }
 

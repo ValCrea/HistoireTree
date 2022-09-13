@@ -54,6 +54,6 @@ const test = [
 
 <template>
   <Story>
-    <TreeView :nodes="test" activatable />
+    <TreeView :items="test" activatable />
   </Story>
 </template>
