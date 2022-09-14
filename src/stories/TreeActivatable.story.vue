@@ -5,6 +5,6 @@ import { items } from "@/utils/tree-examples";
 
 <template>
   <Story>
-    <TreeView :items="items" hoverable activatable color="sucess" />
+    <TreeView :items="items" activatable />
   </Story>
 </template>

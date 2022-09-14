@@ -43,7 +43,7 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
 <template>
   <section
     @click="selectNode"
-    :style="{ paddingLeft: `${2 * nested + 0.3}rem` }"
+    :style="{ paddingLeft: `${1.5 * nested}rem` }"
     :class="{
       pad015: dense,
       pad03: !dense,
