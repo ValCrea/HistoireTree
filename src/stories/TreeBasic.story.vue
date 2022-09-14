@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import TreeView from "@/components/TreeView.vue";
 import { items } from "@/utils/tree-examples";
+
+const source = `
+<template>
+  <TreeView :items="items" />
+</template>
+`;
 </script>
 
 <template>
-  <Story title="Basic tree">
+  <Story title="Basic tree" :source="source">
     <TreeView :items="items" />
   </Story>
 </template>
