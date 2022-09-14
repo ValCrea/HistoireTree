@@ -1,18 +1,32 @@
 <script setup lang="ts">
-import { ref, isRef, type Ref } from "vue";
+import { ref, computed, isRef, type Ref } from "vue";
 import type { Node } from "@/utils/tree-types";
 import TreeViewNode from "@/components/TreeViewNode.vue";
 import { treeKeysFill } from "@/utils/tree-utils";
+import { isHex, isColor, stingToHex } from "@/utils/color-utils";
 
 const props = defineProps<{
   items: Node[];
   dense?: boolean;
   activatable?: boolean;
+  color?: string;
 }>();
 
 const fullNodes: Ref<Node>[] = treeKeysFill(props.items).map((node) =>
   ref(node)
 );
+
+const trueColor = computed(() => {
+  if (!props?.color) return stingToHex("primary");
+
+  if (isColor(props.color)) return stingToHex(props.color);
+
+  if (isHex(props.color)) return props.color;
+
+  return stingToHex("primary");
+});
+
+console.log(trueColor.value);
 
 function unselectNode(node: Ref<Node> | Node) {
   if (isRef(node)) {
@@ -34,9 +48,10 @@ function clearSelected() {
     <li v-for="node in fullNodes">
       <TreeViewNode
         v-model:node="node.value"
-        :dense="props.dense"
-        :activatable="props.activatable"
+        :dense="props.dense ? true : false"
+        :activatable="props.activatable ? true : false"
         :nested="0"
+        :color="trueColor"
         @clearSelect="clearSelected"
       />
     </li>
