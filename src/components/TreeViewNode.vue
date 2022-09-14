@@ -45,8 +45,8 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
     @click="selectNode"
     :style="{ paddingLeft: `${1.5 * nested}rem` }"
     :class="{
-      pad015: dense,
-      pad03: !dense,
+      'pad-wide': !dense,
+      'pad-dense': dense,
       'node--selected': props.node.selected,
       'node--hoverable': props.hoverable && !props.node.selected,
     }"
@@ -144,12 +144,12 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
   }
 }
 
-.pad015 {
+.pad-dense {
   padding: 0.15rem;
 }
 
-.pad03 {
-  padding: 0.3rem;
+.pad-wide {
+  padding: 0.4rem;
 }
 
 .focus-circle {

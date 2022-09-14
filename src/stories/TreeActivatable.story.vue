@@ -4,7 +4,7 @@ import { items } from "@/utils/tree-examples";
 </script>
 
 <template>
-  <Story>
+  <Story title="Activatable tree">
     <TreeView :items="items" activatable />
   </Story>
 </template>
