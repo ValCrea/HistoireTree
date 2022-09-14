@@ -1,11 +1,11 @@
 const hexRegex = /#[0-9A-Fa-f]{6}/g;
-export const isHex = (str: string) => {
+const isHex = (str: string): boolean => {
   let match = str.match(hexRegex);
-  return match && str === match[0];
+  return match && str === match[0] ? true : false;
 };
 
 const colors = ["primary", "secondary", "sucess", "warning", "danger", "info"];
-export const isColor = (str: string) => {
+const isColor = (str: string) => {
   return colors.includes(str.toLowerCase());
 };
 
@@ -17,8 +17,15 @@ const colorHex: { [key: string]: string } = {
   danger: "#dc3545",
   info: "#17a2b8",
 };
-export const stingToHex = (str: string): string => {
+const colorToHex = (str: string): string => {
   return colorHex[str] || "#000000";
+};
+
+export const stringToColor = (str?: string): string => {
+  if (!str) return colorToHex("primary");
+  if (isColor(str)) return colorToHex(str);
+  if (isHex(str)) return str;
+  return colorToHex("primary");
 };
 
 export const addHexOpacity = (str: string) => {

@@ -1,58 +1,102 @@
 <script setup lang="ts">
-import { ref, computed, isRef, type Ref } from "vue";
-import type { Node } from "@/utils/tree-types";
-import TreeViewNode from "@/components/TreeViewNode.vue";
-import { treeKeysFill } from "@/utils/tree-utils";
-import { isHex, isColor, stingToHex } from "@/utils/color-utils";
+import { ref, computed, type Ref } from "vue";
+import type { Tree } from "@/utils/tree-types";
+import TreeItem from "@/components/TreeItem.vue";
+import { treesUnselect, treesDefine, treeFind } from "@/utils/tree-utils";
+import { stringToColor } from "@/utils/color-utils";
 
 const props = defineProps<{
-  items: Node[];
+  items: Tree[];
   color?: string;
-  dense?: boolean;
   activatable?: boolean;
   hoverable?: boolean;
+  dense?: boolean;
 }>();
 
-const fullNodes: Ref<Node>[] = treeKeysFill(props.items).map((node) =>
-  ref(node)
-);
-
-const trueColor = computed(() => {
-  if (!props?.color) return stingToHex("primary");
-
-  if (isColor(props.color)) return stingToHex(props.color);
-
-  if (isHex(props.color)) return props.color;
-
-  return stingToHex("primary");
-});
-
-function unselectNode(node: Ref<Node> | Node) {
-  if (isRef(node)) {
-    node.value.selected = false;
-    for (let n of node.value.nodes) unselectNode(n);
-  } else {
-    node.selected = false;
-    for (let n of node.nodes) unselectNode(n);
-  }
-}
+const items = ref(treesDefine(props.items).map((tree) => ref(tree)));
+const color = computed(() => stringToColor(props.color));
 
 function clearSelected() {
-  for (let n of fullNodes) unselectNode(n);
+  treesUnselect(items.value);
+}
+
+let dropedOn = 0;
+let dropedFrom = 0;
+const removeTree = ref(0);
+const addTree: Ref<{ tree: Tree | null; to: number }> = ref({
+  tree: null,
+  to: 0,
+});
+function reciveDropedOn(id: number) {
+  dropedOn = id;
+}
+function reciveDropedFrom(id: number) {
+  dropedFrom = id;
+
+  if (dropedFrom == dropedOn) {
+    dropedOn = 0;
+    dropedFrom = 0;
+    return;
+  }
+
+  if (dropedFrom == 0) {
+    dropedOn = 0;
+    return;
+  }
+
+  if (dropedOn == 0) {
+    const tree = treeFind(items.value, dropedFrom);
+    if (!tree) {
+      dropedFrom = 0;
+      return;
+    }
+
+    if (items.value.filter((item) => item.value.id == dropedFrom).length > 0) {
+      dropedFrom = 0;
+      return;
+    }
+
+    removeTree.value = dropedFrom;
+    items.value.push(ref({ ...tree }));
+    dropedFrom = 0;
+    return;
+  }
+
+  const tree = treeFind(items.value, dropedFrom);
+  if (!tree) {
+    dropedOn = 0;
+    dropedFrom = 0;
+    return;
+  }
+
+  const isNested = treeFind(tree.items, dropedOn);
+  if (isNested) {
+    dropedOn = 0;
+    dropedFrom = 0;
+    return;
+  }
+
+  removeTree.value = dropedFrom;
+  addTree.value = { tree: tree, to: dropedOn };
+  console.log("ADD TREE");
 }
 </script>
 
 <template>
   <ul class="tree-container">
-    <li v-for="node in fullNodes">
-      <TreeViewNode
-        v-model:node="node.value"
-        :color="trueColor"
-        :dense="props.dense ? true : false"
+    <li v-for="item in items">
+      <TreeItem
+        v-model:tree="item.value"
+        :color="color"
         :activatable="props.activatable ? true : false"
         :hoverable="props.hoverable ? true : false"
+        :dense="props.dense ? true : false"
         :nested="0"
-        @clearSelect="clearSelected"
+        :removeTree="removeTree"
+        :addTree="addTree"
+        @clear-select="clearSelected"
+        @droped-on="reciveDropedOn"
+        @droped-from="reciveDropedFrom"
       />
     </li>
   </ul>

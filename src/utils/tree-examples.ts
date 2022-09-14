@@ -1,48 +1,48 @@
 export const test = [
   {
-    name: "Node1",
-    nodes: [
+    lable: "Node1",
+    items: [
       {
-        name: "node11",
-        nodes: [],
+        label: "node11",
+        items: [],
       },
       {
-        name: "node12",
-        nodes: [
+        label: "node12",
+        items: [
           {
-            name: "node121",
-            nodes: [],
+            label: "node121",
+            items: [],
           },
           {
-            name: "node122",
-            nodes: [],
+            label: "node122",
+            items: [],
           },
           {
-            name: "node123",
-            nodes: [],
+            label: "node123",
+            items: [],
           },
         ],
       },
       {
-        name: "node13",
-        nodes: [],
+        label: "node13",
+        items: [],
       },
     ],
   },
   {
-    name: "Node2",
-    nodes: [],
+    label: "Node2",
+    items: [],
   },
   {
-    name: "Node3",
-    nodes: [
+    label: "Node3",
+    items: [
       {
-        name: "node31",
-        nodes: [],
+        label: "node31",
+        items: [],
       },
       {
-        name: "node32",
-        nodes: [],
+        label: "node32",
+        items: [],
       },
     ],
   },
@@ -50,60 +50,60 @@ export const test = [
 
 export const items = [
   {
-    name: "Applications :",
-    nodes: [
+    label: "Applications :",
+    items: [
       {
-        name: "Calendar : app",
-        nodes: [],
+        label: "Calendar : app",
+        items: [],
       },
       {
-        name: "Chrome : app",
-        nodes: [],
+        label: "Chrome : app",
+        items: [],
       },
       {
-        name: "Webstorm : app",
-        nodes: [],
+        label: "Webstorm : app",
+        items: [],
       },
     ],
   },
   {
-    name: "Documents :",
-    nodes: [
+    label: "Documents :",
+    items: [
       {
-        name: "vuetify :",
-        nodes: [
+        label: "vuetify :",
+        items: [
           {
-            name: "src",
-            nodes: [
+            label: "src",
+            items: [
               {
-                name: "index : ts",
-                nodes: [],
+                label: "index : ts",
+                items: [],
               },
               {
-                name: "bootstrap : ts",
-                nodes: [],
+                label: "bootstrap : ts",
+                items: [],
               },
             ],
           },
         ],
       },
       {
-        name: "material :",
-        nodes: [
+        label: "material :",
+        items: [
           {
-            name: "src",
-            nodes: [
+            label: "src",
+            items: [
               {
-                name: "v-btn : ts",
-                nodes: [],
+                label: "v-btn : ts",
+                items: [],
               },
               {
-                name: "v-card : ts",
-                nodes: [],
+                label: "v-card : ts",
+                items: [],
               },
               {
-                name: "v-window : ts",
-                nodes: [],
+                label: "v-window : ts",
+                items: [],
               },
             ],
           },
@@ -112,49 +112,49 @@ export const items = [
     ],
   },
   {
-    name: "Downloads :",
-    nodes: [
+    label: "Downloads :",
+    items: [
       {
-        name: "October : pdf",
-        nodes: [],
+        label: "October : pdf",
+        items: [],
       },
       {
-        name: "November : pdf",
-        nodes: [],
+        label: "November : pdf",
+        items: [],
       },
       {
-        name: "Tutorial : html",
-        nodes: [],
+        label: "Tutorial : html",
+        items: [],
       },
     ],
   },
   {
-    name: "Applications :",
-    nodes: [
+    label: "Applications :",
+    items: [
       {
-        name: "Tutorials :",
-        nodes: [
+        label: "Tutorials :",
+        items: [
           {
-            name: "Basic layouts : mp4",
-            nodes: [],
+            label: "Basic layouts : mp4",
+            items: [],
           },
           {
-            name: "Advanced techniques : mp4",
-            nodes: [],
+            label: "Advanced techniques : mp4",
+            items: [],
           },
           {
-            name: "All about app : dir",
-            nodes: [],
+            label: "All about app : dir",
+            items: [],
           },
         ],
       },
       {
-        name: "Intro : mov",
-        nodes: [],
+        label: "Intro : mov",
+        items: [],
       },
       {
-        name: "Conference introduction : avi",
-        nodes: [],
+        label: "Conference introduction : avi",
+        items: [],
       },
     ],
   },
