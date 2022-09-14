@@ -54,6 +54,6 @@ const test = [
 
 <template>
   <Story>
-    <TreeView :items="test" activatable color="sucess" />
+    <TreeView :items="test" hoverable activatable color="sucess" />
   </Story>
 </template>

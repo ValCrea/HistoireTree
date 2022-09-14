@@ -7,9 +7,10 @@ import { isHex, isColor, stingToHex } from "@/utils/color-utils";
 
 const props = defineProps<{
   items: Node[];
+  color?: string;
   dense?: boolean;
   activatable?: boolean;
-  color?: string;
+  hoverable?: boolean;
 }>();
 
 const fullNodes: Ref<Node>[] = treeKeysFill(props.items).map((node) =>
@@ -25,8 +26,6 @@ const trueColor = computed(() => {
 
   return stingToHex("primary");
 });
-
-console.log(trueColor.value);
 
 function unselectNode(node: Ref<Node> | Node) {
   if (isRef(node)) {
@@ -48,10 +47,11 @@ function clearSelected() {
     <li v-for="node in fullNodes">
       <TreeViewNode
         v-model:node="node.value"
+        :color="trueColor"
         :dense="props.dense ? true : false"
         :activatable="props.activatable ? true : false"
+        :hoverable="props.hoverable ? true : false"
         :nested="0"
-        :color="trueColor"
         @clearSelect="clearSelected"
       />
     </li>

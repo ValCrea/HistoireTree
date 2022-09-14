@@ -2,12 +2,14 @@
 import { ref, computed, nextTick } from "vue";
 import type { Node } from "@/utils/tree-types";
 import { addHexOpacity } from "@/utils/color-utils";
+import { nodeKeysFill } from "@/utils/tree-utils";
 
 const props = defineProps<{
   node: Node;
   dense: boolean;
-  activatable: boolean;
   color: string;
+  activatable: boolean;
+  hoverable: boolean;
 
   nested: number;
 }>();
@@ -23,12 +25,16 @@ const expandNodes = () => {
 const selectNode = () => {
   if (!props.activatable) return;
 
-  emit("clear-select");
-
-  nextTick(() => {
-    props.node.selected = !props.node.selected;
+  if (props.node.selected) {
+    props.node.selected = false;
     emit("update:node", props.node);
-  });
+  } else {
+    emit("clear-select");
+    nextTick(() => {
+      props.node.selected = !props.node.selected;
+      emit("update:node", props.node);
+    });
+  }
 };
 
 const opaqueColor = computed(() => addHexOpacity(props.color));
@@ -42,6 +48,7 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
       pad015: dense,
       pad03: !dense,
       'node--selected': props.node.selected,
+      'node--hoverable': props.hoverable && !props.node.selected,
     }"
     class="node"
   >
@@ -70,10 +77,11 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
     <template v-for="childNode in refNode">
       <TreeViewNode
         v-model:node="childNode.value"
+        :color="color"
         :dense="props.dense"
         :activatable="props.activatable"
+        :hoverable="props.hoverable"
         :nested="nested + 1"
-        :color="color"
         @clearSelect="emit('clear-select')"
       />
     </template>
@@ -91,6 +99,12 @@ const opaqueColor = computed(() => addHexOpacity(props.color));
   &--selected {
     background-color: v-bind(opaqueColor);
     color: v-bind(color);
+  }
+
+  &--hoverable {
+    &:hover {
+      background-color: #eaeaea3a;
+    }
   }
 
   &__name {
