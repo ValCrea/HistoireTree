@@ -8,3 +8,10 @@ import { items } from "@/utils/tree-examples";
     <TreeView :items="items" dense />
   </Story>
 </template>
+
+<docs lang="md">
+## Props: dense
+
+We can pass an **dense** attribute to the
+component, which display tree items closer together.
+</docs>

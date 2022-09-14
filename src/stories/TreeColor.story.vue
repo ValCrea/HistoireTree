@@ -34,3 +34,20 @@ import { items } from "@/utils/tree-examples";
     </Variant>
   </Story>
 </template>
+
+<docs lang="md">
+## Props: color
+
+The color of the **activatable** attribute can be
+custumized with the **color** attribute.
+
+### Available colors:
+
+- primary
+- secondary
+- sucess
+- warning
+- danger
+- info
+- custum hex color (ex. #123456)
+</docs>

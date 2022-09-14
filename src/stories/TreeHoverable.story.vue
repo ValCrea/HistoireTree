@@ -8,3 +8,10 @@ import { items } from "@/utils/tree-examples";
     <TreeView :items="items" activatable hoverable />
   </Story>
 </template>
+
+<docs lang="md">
+## Props: hoverable
+
+We can pass an **hoverable** attribute to the
+component, highlighting items we hover over.
+</docs>

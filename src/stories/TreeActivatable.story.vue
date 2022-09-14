@@ -8,3 +8,10 @@ import { items } from "@/utils/tree-examples";
     <TreeView :items="items" activatable />
   </Story>
 </template>
+
+<docs lang="md">
+## Props: activatable
+
+We can pass an **activatable** attribute to the
+component, marking the item we last clicked on.
+</docs>
