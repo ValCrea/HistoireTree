@@ -127,7 +127,7 @@ export const items = [
     ],
   },
   {
-    label: "Applications :",
+    label: "Videos :",
     items: [
       {
         label: "Tutorials :",

@@ -13,11 +13,14 @@
     "story:preview": "histoire preview"
   },
   "dependencies": {
-    "vue": "^3.2.38"
+    "lodash": "^4.17.21",
+    "vue": "^3.2.38",
+    "vue-lodash": "^2.1.2"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.10.7",
     "@rushstack/eslint-patch": "^1.1.4",
+    "@types/lodash": "^4.14.185",
     "@types/node": "^16.11.56",
     "@vitejs/plugin-vue": "^3.0.3",
     "@vue/eslint-config-prettier": "^7.0.0",

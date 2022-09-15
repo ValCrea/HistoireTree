@@ -1,17 +1,5 @@
 import type { Tree } from "@/utils/tree-types";
 
-/*export const treesUnselect = (trees: Tree[] | Ref<Tree>[]) => {
-  for (const tree of trees) {
-    if (isRef(tree)) {
-      tree.value.selected = false;
-      treesUnselect(tree.value.items);
-    } else {
-      tree.selected = false;
-      treesUnselect(tree.items);
-    }
-  }
-};*/
-
 export const treesDefine = (
   trees: readonly Tree[],
   data?: { id: number }
@@ -32,22 +20,6 @@ export const treesDefine = (
   }
   return treesDef;
 };
-
-/*export const treesFill = (
-  trees: readonly Tree[] | Ref<Tree[]>
-): Ref<Tree[]> => {
-  const treesFull: Tree[] = [];
-
-  for (const tree of unref(trees)) {
-    const treeFull = { ...tree };
-    treeFull.expanded = false;
-    treeFull.selected = false;
-    tree.items = treesFill(tree.items);
-    treesFull.push(treeFull);
-  }
-
-  return ref(treesFull);
-};*/
 
 export const treeFindParent = (trees: Tree[], id: number): Tree | null => {
   for (const tree of trees) {
