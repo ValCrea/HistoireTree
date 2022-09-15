@@ -22,19 +22,37 @@ const sourceColor = `
 
 const sourceHoverable = `
 <template>
-  <TreeView :items="items" activatable color="#aa55cc" />
+  <TreeView :items="items" hoverable />
 </template>
 `;
 
 const sourceDense = `
 <template>
-  <TreeView :items="items" activatable color="#aa55cc" />
+  <TreeView :items="items" dense />
 </template>
 `;
 
 const sourceDrag = `
 <template>
   <TreeView :items="items" drag />
+</template>
+`;
+
+const sourceRounded = `
+<template>
+  <TreeView :items="items" activatable hoverable color="sucess" rounded />
+</template>
+`;
+
+const sourceRoundedLeft = `
+<template>
+  <TreeView :items="items" activatable hoverable color="warning" rounded-left />
+</template>
+`;
+
+const sourceRoundedRight = `
+<template>
+  <TreeView :items="items" activatable hoverable color="danger" rounded-right />
 </template>
 `;
 
@@ -47,25 +65,55 @@ const sourceOpenAll = `
 
 <template>
   <Story title="TreeView" :layout="{ type: 'grid', width: '100%' }">
-    <Variant title="Basic tree" :source="sourceBasic">
+    <Variant title="Basic" :source="sourceBasic">
       <TreeView :items="items" />
     </Variant>
-    <Variant title="Activatable tree" :source="sourceActivatable">
+
+    <Variant title="Activatable" :source="sourceActivatable">
       <TreeView :items="items" activatable />
     </Variant>
-    <Variant title="Activatable color tree" :source="sourceColor">
+
+    <Variant title="Activatable custum color" :source="sourceColor">
       <TreeView :items="items" activatable color="#aa55cc" />
     </Variant>
-    <Variant title="Hoverable tree" :hoverable="sourceHoverable">
+
+    <Variant title="Hoverable" :hoverable="sourceHoverable">
       <TreeView :items="items" hoverable />
     </Variant>
-    <Variant title="Dense tree" :dense="sourceDense">
+
+    <Variant title="Dense" :dense="sourceDense">
       <TreeView :items="items" dense />
     </Variant>
-    <Variant title="Draggable tree" :source="sourceDrag">
+
+    <Variant title="Draggable" :source="sourceDrag">
       <TreeView :items="items" drag />
     </Variant>
-    <Variant title="Opened tree" :source="sourceOpenAll">
+
+    <Variant title="Rounded" :source="sourceRounded">
+      <TreeView :items="items" activatable hoverable color="sucess" rounded />
+    </Variant>
+
+    <Variant title="Rounded left" :source="sourceRoundedLeft">
+      <TreeView
+        :items="items"
+        activatable
+        hoverable
+        color="warning"
+        rounded-left
+      />
+    </Variant>
+
+    <Variant title="Rounded right" :source="sourceRoundedRight">
+      <TreeView
+        :items="items"
+        activatable
+        hoverable
+        color="danger"
+        rounded-right
+      />
+    </Variant>
+
+    <Variant title="Pre-opened" :source="sourceOpenAll">
       <TreeView :items="items" open-all />
     </Variant>
   </Story>

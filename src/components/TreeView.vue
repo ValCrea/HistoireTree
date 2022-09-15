@@ -13,6 +13,9 @@ const props = defineProps<{
   hoverable?: boolean;
   dense?: boolean;
   drag?: boolean;
+  rounded?: boolean;
+  roundedLeft?: boolean;
+  roundedRight?: boolean;
   openAll?: boolean;
 
   data?: Data;
@@ -163,6 +166,8 @@ function forceUpdate() {
         'tree--selected': props.activatable && self.selected,
         'tree--hoverable':
           props.hoverable && (!props.activatable || !self.selected),
+        'tree--rounded-left': props.rounded || props.roundedLeft,
+        'tree--rounded-right': props.rounded || props.roundedRight,
       }"
       class="tree"
       @drop="dropedOn(self.id)"
@@ -203,8 +208,11 @@ function forceUpdate() {
       :hoverable="props.hoverable"
       :dense="props.dense"
       :drag="props.drag"
-      :data="data"
+      :rounded="props.rounded"
+      :roundedLeft="props.roundedLeft"
+      :roundedRight="props.roundedRight"
       :openAll="props.openAll"
+      :data="data"
       @update-item="updateItem"
       @clear-selected="clearSelected"
       @droped-on="dropedOn"
@@ -231,6 +239,16 @@ function forceUpdate() {
     &:hover {
       background-color: #eaeaea3a;
     }
+  }
+
+  &--rounded-left {
+    border-top-left-radius: 9999em;
+    border-bottom-left-radius: 9999em;
+  }
+
+  &--rounded-right {
+    border-top-right-radius: 9999em;
+    border-bottom-right-radius: 9999em;
   }
 
   &__label {
