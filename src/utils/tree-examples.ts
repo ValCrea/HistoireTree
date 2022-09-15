@@ -1,47 +1,45 @@
-export const test = [
+import type { Tree } from "@/utils/tree-types";
+
+export const test: Tree[] = [
   {
-    lable: "Node1",
+    label: "NodeA",
     items: [
       {
-        label: "node11",
+        label: "NodeAA",
         items: [],
       },
       {
-        label: "node12",
+        label: "NodeAB",
         items: [
           {
-            label: "node121",
+            label: "NodeABA",
             items: [],
           },
           {
-            label: "node122",
-            items: [],
-          },
-          {
-            label: "node123",
+            label: "NodeABB",
             items: [],
           },
         ],
       },
       {
-        label: "node13",
+        label: "NodeAC",
         items: [],
       },
     ],
   },
   {
-    label: "Node2",
+    label: "NodeB",
     items: [],
   },
   {
-    label: "Node3",
+    label: "NodeC",
     items: [
       {
-        label: "node31",
+        label: "nodeCA",
         items: [],
       },
       {
-        label: "node32",
+        label: "NodeCB",
         items: [],
       },
     ],

@@ -13,11 +13,12 @@ const props = defineProps<{
   dense?: boolean;
 }>();
 
-const items = ref(treesDefine(props.items).map((tree) => ref(tree)));
+const items = treesDefine(props.items).map((tree) => ref(tree));
 const color = computed(() => stringToColor(props.color));
 
 function clearSelected() {
-  treesUnselect(items.value);
+  console.log("HERE");
+  treesUnselect(items);
 }
 
 let dropedOn = 0;
@@ -45,24 +46,24 @@ function reciveDropedFrom(id: number) {
   }
 
   if (dropedOn == 0) {
-    const tree = treeFind(items.value, dropedFrom);
+    const tree = treeFind(items, dropedFrom);
     if (!tree) {
       dropedFrom = 0;
       return;
     }
 
-    if (items.value.filter((item) => item.value.id == dropedFrom).length > 0) {
+    if (items.filter((item) => item.value.id == dropedFrom).length > 0) {
       dropedFrom = 0;
       return;
     }
 
     removeTree.value = dropedFrom;
-    items.value.push(ref({ ...tree }));
+    items.push(ref({ ...tree }));
     dropedFrom = 0;
     return;
   }
 
-  const tree = treeFind(items.value, dropedFrom);
+  const tree = treeFind(items, dropedFrom);
   if (!tree) {
     dropedOn = 0;
     dropedFrom = 0;
@@ -84,7 +85,7 @@ function reciveDropedFrom(id: number) {
 
 <template>
   <ul class="tree-container">
-    <li v-for="item in items">
+    <li v-for="item in items" :key="item.value.label">
       <TreeItem
         v-model:tree="item.value"
         :color="color"

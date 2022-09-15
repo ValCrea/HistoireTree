@@ -29,11 +29,12 @@ watch(removeTree, () => {
   items.value = items.value.filter((item) => item.value.id != removeTree.value);
 });
 watch(addTree, () => {
-  //console.log(props.tree.label, props.tree.id, addTree.value.to);
   if (addTree.value.tree && addTree.value.to == props.tree.id) {
-    console.log(items.value.length);
-    items.value = [...items.value, ref(addTree.value.tree)];
-    console.log(items.value.length);
+    console.log(addTree.value);
+    items.value.forEach((item) => console.log(item.value.label));
+    items.value.push(ref(addTree.value.tree));
+    items.value.forEach((item) => console.log(item.value.label));
+    items.value.filter(() => true);
     console.log(props.tree.label);
   }
 });
@@ -110,7 +111,7 @@ function emitDropedFrom(id?: number) {
     </p>
   </section>
   <template v-if="props.tree.expanded">
-    <template v-for="item in items">
+    <template v-for="item in items" :key="item.label">
       <TreeItem
         v-model:tree="item.value"
         :color="color"
@@ -150,6 +151,7 @@ function emitDropedFrom(id?: number) {
   &__name {
     margin: 0;
     margin-left: 0.3rem;
+    cursor: grab;
   }
 
   &__expand {

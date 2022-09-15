@@ -6,3 +6,7 @@ export type Tree = {
   expanded?: boolean;
   selected?: boolean;
 };
+
+export type Data = {
+  nested: number;
+};

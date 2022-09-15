@@ -1,7 +1,6 @@
-import { type Ref, isRef } from "vue";
 import type { Tree } from "@/utils/tree-types";
 
-export const treesUnselect = (trees: Tree[] | Ref<Tree>[]) => {
+/*export const treesUnselect = (trees: Tree[] | Ref<Tree>[]) => {
   for (const tree of trees) {
     if (isRef(tree)) {
       tree.value.selected = false;
@@ -11,7 +10,7 @@ export const treesUnselect = (trees: Tree[] | Ref<Tree>[]) => {
       treesUnselect(tree.items);
     }
   }
-};
+};*/
 
 export const treesDefine = (
   trees: readonly Tree[],
@@ -21,8 +20,10 @@ export const treesDefine = (
   if (!data) data = { id: 1 };
 
   for (let t = 0; t < trees.length; t++) {
-    treesDef[t].id = data.id;
-    data.id++;
+    if (treesDef[t].id === undefined) {
+      treesDef[t].id = data.id;
+      data.id++;
+    }
 
     if (!treesDef[t].expanded) treesDef[t].expanded = false;
     if (!treesDef[t].selected) treesDef[t].selected = false;
@@ -32,7 +33,23 @@ export const treesDefine = (
   return treesDef;
 };
 
-export const treeFind = (
+/*export const treesFill = (
+  trees: readonly Tree[] | Ref<Tree[]>
+): Ref<Tree[]> => {
+  const treesFull: Tree[] = [];
+
+  for (const tree of unref(trees)) {
+    const treeFull = { ...tree };
+    treeFull.expanded = false;
+    treeFull.selected = false;
+    tree.items = treesFill(tree.items);
+    treesFull.push(treeFull);
+  }
+
+  return ref(treesFull);
+};*/
+
+/*export const treeFind = (
   trees: Tree[] | Ref<Tree>[],
   id: number
 ): Tree | null => {
@@ -49,3 +66,4 @@ export const treeFind = (
   }
   return null;
 };
+*/
