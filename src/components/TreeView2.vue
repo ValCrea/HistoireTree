@@ -2,7 +2,7 @@
 import { ref, computed, nextTick } from "vue";
 
 import type { Tree, Data } from "@/utils/tree-types";
-import { treesDefine } from "@/utils/tree-utils";
+import { treeFind, treeFindParent, treesDefine } from "@/utils/tree-utils";
 import { stringToColor, addHexOpacity } from "@/utils/color-utils";
 
 const props = defineProps<{
@@ -14,7 +14,12 @@ const props = defineProps<{
 
   data?: Data;
 }>();
-const emit = defineEmits(["update-item", "clear-selected"]);
+const emit = defineEmits([
+  "update-item",
+  "clear-selected",
+  "droped-on",
+  "droped-from",
+]);
 
 const siblings = ref(treesDefine(props.items));
 const color = computed(() => stringToColor(props.color));
@@ -56,19 +61,74 @@ function clearSelected() {
 }
 
 function updateItem(newItem: Tree) {
-  const parent = siblings.value.filter(
-    (sibling) =>
-      sibling.items.filter((item) => item.id == newItem.id).length > 0
-  )[0];
+  if (!newItem.id) return;
+  const parent = treeFindParent(siblings.value, newItem.id);
 
+  if (!parent) return;
   for (let i = 0; i < parent.items.length; i++) {
     if (parent.items[i].id == newItem.id) {
       parent.items[i] = newItem;
       break;
     }
   }
-
   emit("update-item", parent);
+}
+
+let dropedOnId = 0;
+function dropedOn(id?: number) {
+  if (data.value.nested != 0) {
+    emit("droped-on", id);
+    return;
+  }
+  dropedOnId = id ? id : 0;
+}
+
+let dropedFromId = 0;
+function dropedFrom(id?: number) {
+  if (data.value.nested != 0) {
+    emit("droped-from", id);
+    return;
+  }
+  dropedFromId = id ? id : 0;
+
+  const onId = dropedOnId;
+  const fromId = dropedFromId;
+
+  dropedOnId = 0;
+  dropedFromId = 0;
+
+  const treeParent = treeFindParent(siblings.value, fromId);
+  const treeFrom = treeFind(
+    treeParent ? treeParent.items : siblings.value,
+    fromId
+  );
+  if (!treeFrom) return;
+
+  if (onId) {
+    const dropedOnChild = treeFind(treeFrom.items, onId);
+    if (dropedOnChild) return;
+
+    const treeOn = treeFind(siblings.value, onId);
+    if (!treeOn) return;
+
+    if (treeParent) {
+      treeParent.items = treeParent.items.filter((item) => item.id != fromId);
+    } else {
+      siblings.value = siblings.value.filter((sibling) => sibling.id != fromId);
+    }
+    treeOn.items.push(treeFrom);
+  } else {
+    if (treeParent) {
+      treeParent.items = treeParent.items.filter((item) => item.id != fromId);
+    } else {
+      siblings.value = siblings.value.filter((sibling) => sibling.id != fromId);
+    }
+    siblings.value.push(treeFrom);
+  }
+
+  const temp = siblings.value;
+  siblings.value = [];
+  nextTick(() => (siblings.value = temp));
 }
 </script>
 
@@ -85,7 +145,7 @@ function updateItem(newItem: Tree) {
           props.hoverable && (props.activatable || !self.selected),
       }"
       class="tree"
-      @drop="null"
+      @drop="dropedOn(self.id)"
       @dragover.prevent
       @dragenter.prevent
     >
@@ -106,7 +166,7 @@ function updateItem(newItem: Tree) {
 
       <div v-else class="button-expand__empty"></div>
 
-      <p class="tree__label" draggable="true">
+      <p @dragend="dropedFrom(self.id)" class="tree__label" draggable="true">
         {{ self.label }}
       </p>
     </section>
@@ -120,6 +180,8 @@ function updateItem(newItem: Tree) {
       :data="data"
       @update-item="updateItem"
       @clear-selected="clearSelected"
+      @droped-on="dropedOn"
+      @droped-from="dropedFrom"
       v-if="self.expanded"
     />
   </div>

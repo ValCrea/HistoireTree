@@ -49,21 +49,22 @@ export const treesDefine = (
   return ref(treesFull);
 };*/
 
-/*export const treeFind = (
-  trees: Tree[] | Ref<Tree>[],
-  id: number
-): Tree | null => {
+export const treeFindParent = (trees: Tree[], id: number): Tree | null => {
   for (const tree of trees) {
-    if (isRef(tree)) {
-      if (tree.value.id && tree.value.id == id) return tree.value;
-      const subtree = treeFind(tree.value.items, id);
-      if (subtree) return subtree;
-    } else {
-      if (tree.id && tree.id == id) return tree;
-      const subtree = treeFind(tree.items, id);
-      if (subtree) return subtree;
+    for (const item of tree.items) {
+      if (item.id && item.id == id) return tree;
     }
+    const subtree = treeFindParent(tree.items, id);
+    if (subtree) return subtree;
   }
   return null;
 };
-*/
+
+export const treeFind = (trees: Tree[], id: number): Tree | null => {
+  for (const tree of trees) {
+    if (tree.id && tree.id == id) return tree;
+    const subtree = treeFind(tree.items, id);
+    if (subtree) return subtree;
+  }
+  return null;
+};
