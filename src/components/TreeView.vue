@@ -12,6 +12,7 @@ const props = defineProps<{
   activatable?: boolean;
   hoverable?: boolean;
   dense?: boolean;
+  drag?: boolean;
 
   data?: Data;
 }>();
@@ -82,6 +83,8 @@ function updateItem(newItem: Tree) {
 
 let dropedOnId = 0;
 function dropedOn(id?: number) {
+  if (!props.drag) return;
+
   if (data.value.nested != 0) {
     emit("droped-on", id);
     return;
@@ -91,6 +94,8 @@ function dropedOn(id?: number) {
 
 let dropedFromId = 0;
 function dropedFrom(id?: number) {
+  if (!props.drag) return;
+
   if (data.value.nested != 0) {
     emit("droped-from", id);
     return;
@@ -102,6 +107,8 @@ function dropedFrom(id?: number) {
 
   dropedOnId = 0;
   dropedFromId = 0;
+
+  if (onId == fromId) return;
 
   const treeParent = treeFindParent(siblings.value, fromId);
   const treeFrom = treeFind(
@@ -176,7 +183,12 @@ function forceUpdate() {
 
       <div v-else class="button-expand__empty"></div>
 
-      <p @dragend="dropedFrom(self.id)" class="tree__label" draggable="true">
+      <p
+        @dragend="dropedFrom(self.id)"
+        :class="{ 'tree__label--drag': props.drag }"
+        class="tree__label"
+        :draggable="props.drag ? 'true' : 'false'"
+      >
         {{ self.label }}
       </p>
     </section>
@@ -187,6 +199,7 @@ function forceUpdate() {
       :activatable="props.activatable"
       :hoverable="props.hoverable"
       :dense="props.dense"
+      :drag="drag"
       :data="data"
       @update-item="updateItem"
       @clear-selected="clearSelected"
@@ -219,7 +232,10 @@ function forceUpdate() {
   &__label {
     margin: 0;
     margin-left: 0.3rem;
-    cursor: grab;
+
+    &--drag {
+      cursor: grab;
+    }
   }
 }
 

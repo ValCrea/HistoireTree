@@ -31,10 +31,17 @@ const sourceDense = `
   <TreeView :items="items" activatable color="#aa55cc" />
 </template>
 `;
+
+const sourceDrag = `
+<template>
+  <TreeView :items="items" drag />
+</template>
+`;
+//:layout="{ type: 'grid', width: '100%' }"
 </script>
 
 <template>
-  <Story title="TreeView" :layout="{ type: 'grid', width: '100%' }">
+  <Story title="TreeView">
     <Variant title="Basic tree" :source="sourceBasic">
       <TreeView :items="items" />
     </Variant>
@@ -49,6 +56,9 @@ const sourceDense = `
     </Variant>
     <Variant title="Dense tree" :dense="sourceDense">
       <TreeView :items="items" dense />
+    </Variant>
+    <Variant title="Draggable tree" :source="sourceDrag">
+      <TreeView :items="items" drag />
     </Variant>
   </Story>
 </template>
@@ -114,4 +124,10 @@ component, highlighting items we hover over.
 
 We can pass an **dense** attribute to the
 component, which display tree items closer together.
+
+## Props: dragable
+
+We can pass an **drag** attribute to the
+component which allows us to move items within
+the tree
 </docs>
