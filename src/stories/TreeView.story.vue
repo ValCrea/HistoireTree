@@ -185,10 +185,16 @@ component, which display tree items closer together.
 
 We can pass an **drag** attribute to the
 component which allows us to move items within
-the tree
+the tree.
+
+## Props: rounded
+
+We can pass **rounded**, **rounded-left** and
+**rounded-right** attributes to the component
+to give it a round shape on activation or highlight.
 
 ## Props: open-all
 
 We can pass an **drag** attribute to the
-component which open the entire tre on load
+component which open the entire tre on load.
 </docs>
