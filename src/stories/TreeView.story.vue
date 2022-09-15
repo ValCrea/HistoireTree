@@ -37,11 +37,16 @@ const sourceDrag = `
   <TreeView :items="items" drag />
 </template>
 `;
-//:layout="{ type: 'grid', width: '100%' }"
+
+const sourceOpenAll = `
+<template>
+  <TreeView :items="items" open-all />
+</template>
+`;
 </script>
 
 <template>
-  <Story title="TreeView">
+  <Story title="TreeView" :layout="{ type: 'grid', width: '100%' }">
     <Variant title="Basic tree" :source="sourceBasic">
       <TreeView :items="items" />
     </Variant>
@@ -59,6 +64,9 @@ const sourceDrag = `
     </Variant>
     <Variant title="Draggable tree" :source="sourceDrag">
       <TreeView :items="items" drag />
+    </Variant>
+    <Variant title="Opened tree" :source="sourceOpenAll">
+      <TreeView :items="items" open-all />
     </Variant>
   </Story>
 </template>
@@ -130,4 +138,9 @@ component, which display tree items closer together.
 We can pass an **drag** attribute to the
 component which allows us to move items within
 the tree
+
+## Props: open-all
+
+We can pass an **drag** attribute to the
+component which open the entire tre on load
 </docs>

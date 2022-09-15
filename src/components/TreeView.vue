@@ -13,6 +13,7 @@ const props = defineProps<{
   hoverable?: boolean;
   dense?: boolean;
   drag?: boolean;
+  openAll?: boolean;
 
   data?: Data;
 }>();
@@ -23,7 +24,9 @@ const emit = defineEmits([
   "droped-from",
 ]);
 
-const siblings = ref(treesDefine(lodash.cloneDeep(props.items)));
+const siblings = ref(
+  treesDefine(lodash.cloneDeep(props.items), props.openAll ? true : false)
+);
 const color = computed(() => stringToColor(props.color));
 const colorOpaque = computed(() => addHexOpacity(color.value));
 const data = ref(
@@ -199,8 +202,9 @@ function forceUpdate() {
       :activatable="props.activatable"
       :hoverable="props.hoverable"
       :dense="props.dense"
-      :drag="drag"
+      :drag="props.drag"
       :data="data"
+      :openAll="props.openAll"
       @update-item="updateItem"
       @clear-selected="clearSelected"
       @droped-on="dropedOn"

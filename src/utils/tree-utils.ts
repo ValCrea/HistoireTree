@@ -1,24 +1,25 @@
 import type { Tree } from "@/utils/tree-types";
 
 export const treesDefine = (
-  trees: readonly Tree[],
+  trees: Tree[],
+  expandDefault: boolean,
   data?: { id: number }
 ): Tree[] => {
-  const treesDef = [...trees];
   if (!data) data = { id: 1 };
 
-  for (let t = 0; t < trees.length; t++) {
-    if (treesDef[t].id === undefined) {
-      treesDef[t].id = data.id;
+  for (const tree of trees) {
+    if (tree.id === undefined) {
+      tree.id = data.id;
       data.id++;
     }
 
-    if (!treesDef[t].expanded) treesDef[t].expanded = false;
-    if (!treesDef[t].selected) treesDef[t].selected = false;
+    if (!tree.expanded) tree.expanded = expandDefault;
+    if (!tree.selected) tree.selected = false;
 
-    treesDef[t].items = treesDefine(treesDef[t].items, data);
+    tree.items = treesDefine(tree.items, expandDefault, data);
   }
-  return treesDef;
+
+  return trees;
 };
 
 export const treeFindParent = (trees: Tree[], id: number): Tree | null => {
