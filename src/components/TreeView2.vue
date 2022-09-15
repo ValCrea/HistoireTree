@@ -54,10 +54,15 @@ function toggleSelect(id?: number) {
 }
 
 function clearSelected() {
-  for (const sibling of siblings.value) {
-    sibling.selected = false;
-  }
+  clearItems(siblings.value);
   emit("clear-selected");
+}
+
+function clearItems(items: Tree[]) {
+  for (const item of items) {
+    item.selected = false;
+    clearItems(item.items);
+  }
 }
 
 function updateItem(newItem: Tree) {
@@ -126,6 +131,10 @@ function dropedFrom(id?: number) {
     siblings.value.push(treeFrom);
   }
 
+  forceUpdate();
+}
+
+function forceUpdate() {
   const temp = siblings.value;
   siblings.value = [];
   nextTick(() => (siblings.value = temp));
@@ -142,7 +151,7 @@ function dropedFrom(id?: number) {
         'pad-dense': props.dense,
         'tree--selected': props.activatable && self.selected,
         'tree--hoverable':
-          props.hoverable && (props.activatable || !self.selected),
+          props.hoverable && (!props.activatable || !self.selected),
       }"
       class="tree"
       @drop="dropedOn(self.id)"

@@ -5,6 +5,6 @@ import { test } from "@/utils/tree-examples";
 
 <template>
   <Story title="Test">
-    <TreeView2 :items="test" />
+    <TreeView2 :items="test" activatable hoverable dense />
   </Story>
 </template>
